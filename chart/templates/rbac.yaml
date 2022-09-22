@@ -1,0 +1,22 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "groupcache-demo.fullname" . }}
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["endpoints"]
+  verbs: ["list", "get", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "groupcache-demo.fullname" . }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "groupcache-demo.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ include "groupcache-demo.fullname" . }}
+  apiGroup: rbac.authorization.k8s.io
